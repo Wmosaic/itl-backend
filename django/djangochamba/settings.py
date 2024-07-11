@@ -133,8 +133,8 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 GRAPHQL_JWT = {
-    "JWT_PAYLOAD_HANDLER": "OkVending.utils.jwt_payload",
-    "JWT_DECODE_HANDLER": "OkVending.utils.jwt_decode",
+    "JWT_PAYLOAD_HANDLER": "djangochamba.utils.jwt_payload",
+    "JWT_DECODE_HANDLER": "djangochamba.utils.jwt_decode",
     "JWT_VERIFY_EXPIRATION": False,
     "JWT_EXPIRATION_DELTA": timedelta(seconds=60 * 5),
     "JWT_ALLOW_REFRESH": True,

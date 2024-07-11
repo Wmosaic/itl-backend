@@ -47,13 +47,14 @@ class User(AbstractUser, SoftDeleteModel):
 
     objects = UserManager()
     username = None
-    email            = models.EmailField(max_length=30, blank=False, unique=True)
-    password_token   = models.CharField(max_length=20)
-    uuid             = models.UUIDField(default=uuid.uuid4, unique=True)
-    user_type        = models.PositiveSmallIntegerField(blank=False, default=USER_STUDENT)
-    status           = models.BooleanField()
-    second_last_name = models.CharField(max_length=30, blank=False)
-    control_number   = models.IntegerField(blank=False)
+    current_session_id = models.IntegerField(blank=True, default=None, null=True)
+    email              = models.EmailField(max_length=30, blank=False, unique=True)
+    password_token     = models.CharField(max_length=20)
+    uuid               = models.UUIDField(default=uuid.uuid4, unique=True)
+    user_type          = models.PositiveSmallIntegerField(blank=False, default=USER_STUDENT)
+    status             = models.BooleanField(default=True)
+    second_last_name   = models.CharField(max_length=30, blank=False)
+    control_number     = models.IntegerField(blank=False)
     
     groups = models.ManyToManyField(
         'auth.Group',

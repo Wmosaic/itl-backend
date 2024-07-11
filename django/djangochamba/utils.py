@@ -6,8 +6,8 @@ from rest_framework.response import Response
 from graphql_jwt.utils import jwt_payload as graphql_jwt_payload
 from rest_framework.status import HTTP_400_BAD_REQUEST
 from django.utils.translation import gettext_lazy as _
-import os
-import binascii
+import os, binascii, json
+from django.core import serializers
 
 
 def get_session_by_id(id):
@@ -47,3 +47,41 @@ class InvalidJwtIdError(InvalidTokenError):
 
 def generate_jti():
     return binascii.hexlify(os.urandom(32)).decode()
+
+def check_not_empty_params(params):
+    for param in params.keys():
+        if params[param] == "":
+            content = {
+                "Error": _(
+                    "Variable "
+                    + param
+                    + ' of required type "String!" and not empty was not provided'
+                )
+            }
+            return Response(content, status=HTTP_400_BAD_REQUEST)
+
+def get_user_json(user):
+    obj = clean_response_user(
+        json.loads(serializers.serialize("json", [user]))[0]["fields"]
+    )
+    response = obj
+
+    return response
+
+def clean_response_user(response):
+    if 'password' in response: 
+	    response.pop('password')
+    if 'jwt_id' in response: 
+	    response.pop('jwt_id')
+    if 'password_token' in response: 
+	    response.pop('password_token')
+    if 'created_at' in response: 
+	    response.pop('created_at')
+    if 'updated_at' in response: 
+	    response.pop('updated_at')
+    if 'deleted_at' in response: 
+	    response.pop('deleted_at')
+    if 'id' in response: 
+	    response.pop('id')
+
+    return response

@@ -7,7 +7,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response 
 from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP_200_OK,HTTP_409_CONFLICT, HTTP_401_UNAUTHORIZED
 from graphql_jwt.shortcuts import get_token
-from djangochamba.utils import check_not_empty_params, get_user_json,get_current_user
+from djangochamba.utils import check_not_empty_params, get_user_json
 from django.contrib.auth.hashers import check_password
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
@@ -16,7 +16,7 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset         = User.objects.all()
     serializer_class = UserSerializer
 
-    @action(detail=False, methods=["POST"], permission_classes = (AllowAny))
+    @action(detail=False, methods=["POST"], permission_classes = (AllowAny,))
     def login(self, request):
         data = request.data
 
@@ -27,7 +27,7 @@ class UserViewSet(viewsets.ModelViewSet):
         if check != None:
             return check
         
-        user = User.objects.filter(email = email, password = password)
+        user = User.objects.filter(email = email)
         if user.exists():
             user = user.get()
         

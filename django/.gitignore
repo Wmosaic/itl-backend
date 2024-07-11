@@ -117,3 +117,5 @@ env/
 venv/
 env.bak/
 venv.bak/
+
+*/migrations/*
