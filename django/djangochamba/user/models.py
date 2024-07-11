@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from djangochamba.models import SoftDeleteModel
-import uuid, hashlib
+import uuid
 from djangochamba.utils import generate_jti
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.base_user import BaseUserManager
@@ -75,3 +75,13 @@ class User(AbstractUser, SoftDeleteModel):
 
     def is_admin(self):
         return self.is_superuser
+    
+class UserSession(SoftDeleteModel):
+    class Meta:
+        default_permissions = ()
+        verbose_name_plural = 'sesiones'
+        verbose_name = 'sesión'
+
+    login_date = models.DateTimeField(auto_now_add=True, blank=False, null=False, help_text=_(u'Login date'))
+    logout_date = models.DateTimeField(blank=True, null=True, help_text=_(u'Logout date'))
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=False, null=False)
