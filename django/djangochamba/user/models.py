@@ -11,7 +11,7 @@ class UserManager(BaseUserManager):
 
     def _create_user(self, email, password, **extra_fields):
         """
-        Create and save a user with the givenemail, and password.
+        Create and save a user with the given email, and password.
         """
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
@@ -35,7 +35,7 @@ class User(AbstractUser, SoftDeleteModel):
     class Meta:
         default_permissions = () 
 
-    #Types of users
+    # Types of users
     USER_ADMIN       = 1
     USER_PROFESSOR   = 2
     USER_STUDENT     = 3
@@ -45,19 +45,25 @@ class User(AbstractUser, SoftDeleteModel):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
-
-
+    objects = UserManager()
     username = None
     email            = models.EmailField(max_length=30, blank=False, unique=True)
     password_token   = models.CharField(max_length=20)
     uuid             = models.UUIDField(default=uuid.uuid4, unique=True)
-
     user_type        = models.PositiveSmallIntegerField(blank=False, default=USER_STUDENT)
     status           = models.BooleanField()
     second_last_name = models.CharField(max_length=30, blank=False)
     control_number   = models.IntegerField(blank=False)
-
-    objects = UserManager()
+    
+    groups = models.ManyToManyField(
+        'auth.Group',
+        related_name='custom_user_groups'
+    )
+    user_permissions = models.ManyToManyField(
+        'auth.Permission',
+        related_name='custom_user_permissions'
+    )
+    
     jwt_id = models.CharField(
         max_length=64,
         blank=False,

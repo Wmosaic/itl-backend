@@ -17,8 +17,8 @@ class Student_Classroom(SoftDeleteModel):
         verbose_name        = "Student_Classroom_Record"
         verbose_name_plural = "Student_Classroom_Records"
 
-    student   = models.ForeignKey(Student, on_delete=models.CASCADE, related_name="student")
-    classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE, related_name="classroom")
+    student   = models.ForeignKey(Student, on_delete=models.CASCADE, related_name="student_classrooms")
+    classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE, related_name="student_classrooms")
     
 class Professor_Classroom(SoftDeleteModel):
     class Meta:

@@ -8,7 +8,7 @@ class Professor(SoftDeleteModel):
         verbose_name        = "Professor"
         verbose_name_plural = "Professors"
 
-    user   = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user")
+    user   = models.ForeignKey(User, on_delete=models.CASCADE, related_name="professor_user")
     title  = models.CharField(max_length=50, blank=False)
     hours  = models.IntegerField()
     salary = models.FloatField()
